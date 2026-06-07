@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyTreats: Mini Kids' Cake Decorator & Planner</title>
+    <!-- Custom Neo-Brutalist CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Playful Top Ribbon Announcement -->
+    <div class="top-announcement">
+        <span>✨ Made for sweet fun: Delicious mini bento cakes, custom cupcakes & pops decorated for kids parties ✨</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-container border-tt shadow-md">
+        <div class="logo-block">
+            <div class="logo-icon">🧁</div>
+            <div>
+                <h1 class="logo-text-title">TinyTreats</h1>
+                <span class="logo-text-sub">Mini Sweet Kids Cakes</span>
+            </div>
+        </div>
+        <div class="nav-tabs">
+            <button onclick="switchTab('gallery')" id="tab-gallery" class="nav-tab-btn active">Cakes</button>
+            <button onclick="switchTab('designer')" id="tab-designer" class="nav-tab-btn">Designer</button>
+            <button onclick="switchTab('planner')" id="tab-planner" class="nav-tab-btn">Planner</button>
+            <button onclick="switchTab('decor')" id="tab-decor" class="nav-tab-btn">Decor Lab</button>
+        </div>
+        <div>
+            <span class="sidebar-badge border-tt shadow-sm" style="background-color: var(--col-yellow); color: var(--col-teal); margin-bottom: 0;">Party Hub</span>
+        </div>
+    </nav>
+
+    <!-- App Hero Split Section -->
+    <div class="hero-grid">
+        <div class="hero-main border-tt shadow-md">
+            <h2 class="hero-title">Sweet Treats,<br>Smoll & Sweet!</h2>
+            <p class="hero-desc">Delight your kids with sweet single-serving bento cakes, mini cupcakes, and fun cake pops. Designed for small hands and grand celebrations without high leftover waste!</p>
+        </div>
+        <div class="hero-sidebar border-tt shadow-md">
+            <span class="sidebar-badge border-tt">Checklist</span>
+            <h3 style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;" id="checklist-title">0 Scheduled</h3>
+            <p style="font-size: 0.75rem; font-weight: 700; margin-bottom: 1.25rem;">Add your custom-designed small cakes onto the calendar to generate ingredients instantly.</p>
+            <button onclick="switchTab('planner')" class="option-btn active" style="align-self: stretch; text-align: center; font-weight: 900; background-color: white; color: var(--col-teal); font-size: 0.7rem; border-radius: 12px; box-shadow: 2px 2px 0px var(--col-teal);">
+                GO TO PLANNER
+            </button>
+        </div>
+    </div>
+
+    <!-- Sub-views Sections -->
+
+    <!-- SECTION 1: CAKES GALLERY -->
+    <div id="section-gallery" class="view-section fade-in">
+        <h2 style="font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 4px solid var(--col-teal); padding-bottom: 0.5rem;">Mini Cake Gallery</h2>
+        <div class="gallery-container" id="recipes-gallery">
+            <!-- Populated via JavaScript dynamically -->
+        </div>
+    </div>
+
+    <!-- SECTION 2: INTERACTIVE CAKE DESIGNER WORKBENCH -->
+    <div id="section-designer" class="view-section fade-in" style="display: none;">
+        <div class="designer-workbench">
+            
+            <!-- Dynamic Renderer Column -->
+            <div class="mockup-canvas-box border-tt shadow-lg">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span class="sidebar-badge border-tt" style="background-color: var(--col-yellow); color: var(--col-teal);">LIVE MOCKUP 🍰</span>
+                    <button onclick="resetDesigner()" class="option-btn shadow-sm" style="padding: 0.25rem 0.5rem; font-size: 0.6rem; font-weight: 900; background-color: var(--col-cream);">RESET</button>
+                </div>
+
+                <!-- Canvas Render -->
+                <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 320px; width: 100%;">
+                    <!-- Platter -->
+                    <div class="platter-base"></div>
+                    <!-- Assembler -->
+                    <div class="cake-assembler-core">
+                        <!-- Topper -->
+                        <div class="cake-topper-display" id="render-topper">🧸</div>
+                        <!-- Frosting Cloud -->
+                        <div class="frosting-shroud-cloud" id="render-frosting">
+                            <!-- Shine Overlay -->
+                            <div style="position: absolute; top: 8px; left: 16px; right: 16px; height: 4px; background: rgba(255,255,255,0.4); border-radius: 99px;"></div>
+                        </div>
+                        <!-- Sponge -->
+                        <div class="sponge-body-block" id="render-sponge"></div>
+                    </div>
+                </div>
+
+                <div class="border-tt shadow-sm" style="background-color: var(--col-cream); padding: 1rem; border-radius: 20px;">
+                    <p style="font-size: 0.6rem; font-weight: 900; text-transform: uppercase; color: #4A5568;">Your Mini Design Formula:</p>
+                    <h4 id="designed-formula-title" style="font-size: 0.9rem; font-weight: 900; text-transform: uppercase; color: var(--col-teal); margin-bottom: 0.25rem;">THE MILKY VANILLA BENTO CAKE</h4>
+                    <p id="designed-formula-meta" style="font-size: 0.65rem; font-weight: 900; text-transform: uppercase; color: var(--col-coral);">★ BUBBLEGUM PINK • CANDY STARS top with Teddy Bear</p>
+                </div>
+            </div>
+
+            <!-- Interative Controllers Controls Column -->
+            <div class="controls-card-panel border-tt shadow-md">
+                <h3 style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 4px solid var(--col-teal); padding-bottom: 0.5rem;">Bakery Workbench</h3>
+                
+                <!-- Step 1: Shape -->
+                <div>
+                    <span class="step-label">Step 1: Choose Cake Sizing Shape</span>
+                    <div class="options-flex-grid">
+                        <button onclick="setShapeStyle('bento', 'Bento Cake')" class="option-btn active" id="btn-shape-bento"><span class="opt-title">Smoll Bento (4&quot;)</span></button>
+                        <button onclick="setShapeStyle('cupcake', 'Cupcake')" class="option-btn" id="btn-shape-cupcake"><span class="opt-title">Cupcake</span></button>
+                        <button onclick="setShapeStyle('cakepop', 'Cake Pop')" class="option-btn" id="btn-shape-cakepop"><span class="opt-title">Cake Pop</span></button>
+                        <button onclick="setShapeStyle('mugcake', 'Mug Cake')" class="option-btn" id="btn-shape-mugcake"><span class="opt-title">Mug Cake</span></button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Flavor -->
+                <div>
+                    <span class="step-label">Step 2: Choose Cake Base Flavor</span>
+                    <div class="options-flex-grid">
+                        <button onclick="setBaseFlavor('vanilla', 'Milky Vanilla', '#FFFDF0')" class="option-btn active" id="btn-base-vanilla"><span class="opt-title">Milky Vanilla</span></button>
+                        <button onclick="setBaseFlavor('chocolate', 'Chocolate Fudge', '#5c4033')" class="option-btn" id="btn-base-chocolate"><span class="opt-title">Double Choco</span></button>
+                        <button onclick="setBaseFlavor('strawberry', 'Strawberry', '#FFC0CB')" class="option-btn" id="btn-base-strawberry"><span class="opt-title">Strawberry</span></button>
+                        <button onclick="setBaseFlavor('funfetti', 'Funfetti White', '#FFFFFF')" class="option-btn" id="btn-base-funfetti"><span class="opt-title">Rainbow Funfetti</span></button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Frosting -->
+                <div>
+                    <span class="step-label">Step 3: Frosting Shade</span>
+                    <div class="options-flex-grid">
+                        <button onclick="setFrostingColor('pink', 'Bubblegum Pink', '#FF6B6B')" class="option-btn active" id="btn-frost-pink"><span class="opt-title">Pink</span></button>
+                        <button onclick="setFrostingColor('blue', 'Marshmallow Blue', '#4ECDC4')" class="option-btn" id="btn-frost-blue"><span class="opt-title">Marshmallow Blue</span></button>
+                        <button onclick="setFrostingColor('purple', 'Magic Violet', '#A29BFE')" class="option-btn" id="btn-frost-purple"><span class="opt-title">Magic Violet</span></button>
+                        <button onclick="setFrostingColor('brown', 'Chocolate Ganache', '#3D2314')" class="option-btn" id="btn-frost-brown"><span class="opt-title">Choco Ganache</span></button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Toppers -->
+                <div>
+                    <span class="step-label">Step 4: Candy Topper Model</span>
+                    <select id="topper-selector" onchange="updateTopper()" class="option-btn shadow-sm" style="width: 100%; font-weight: 800; font-size: 0.75rem; text-transform: uppercase;">
+                        <option value="🧸">Gummy Teddy Bear 🧸</option>
+                        <option value="🦕">Candy Dinosaur 🦕</option>
+                        <option value="🍒">Sweet Glazed Cherry 🍒</option>
+                        <option value="👑">Princess Crown 👑</option>
+                        <option value="🕯️">Birthday Candle 🕯️</option>
+                        <option value="">No Topper</option>
+                    </select>
+                </div>
+
+                <!-- Dynamic Recipe Formula List -->
+                <div class="border-tt shadow-sm" style="background-color: var(--col-cream); padding: 1.25rem; border-radius: 24px; margin-top: 1.5rem;">
+                    <h4 style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.25rem; color: var(--col-teal);">
+                        📝 Dynamic DIY Baking Recipe Formula
+                    </h4>
+                    <p style="font-size: 0.65rem; font-weight: 700; color: #718096; margin-bottom: 0.75rem;">Formula compiled dynamically based on your designed custom smoll cake specifications.</p>
+                    <ul id="diy-ingredients-formula-list" style="list-style: none; font-size: 0.7rem; font-weight: 800; line-height: 1.6; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                        <!-- Auto calculated via JS -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: CELEBRATION PLANNER -->
+    <div id="section-planner" class="view-section fade-in" style="display: none;">
+        <div class="designer-workbench">
+            
+            <!-- Planned list calendar items -->
+            <div class="controls-card-panel border-tt shadow-md">
+                <h3 style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 4px solid var(--col-teal); padding-bottom: 0.5rem;">Party Calendar</h3>
+                
+                <!-- Quick add custom scheduled item form -->
+                <div class="border-tt shadow-sm" style="background-color: var(--col-cream); padding: 1.25rem; border-radius: 24px; margin-bottom: 1.5rem;">
+                    <form id="add-event-form" onsubmit="event.preventDefault(); addPlannerEvent();" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <span class="step-label" style="font-size: 0.7rem; color: var(--col-teal); border-bottom: 2px dashed rgba(26,83,92,0.15); padding-bottom: 0.25rem; width: 100%;">Add Scheduled Treat Form</span>
+                        <div>
+                            <label style="font-size: 0.6rem; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">Choose Cake:</label>
+                            <select id="event-recipe-id" class="option-btn" style="width: 100%; font-size: 0.7rem; font-weight: 800;">
+                                <option value="rainbow-bento">Sweet Rainbow Bento Cake</option>
+                                <option value="dino-cupcakes">Dino Candy Choco-Cupcakes</option>
+                                <option value="donut-bundt">Glazed Mini Carnival Bundts</option>
+                                <option value="cookie-tarts">Marshmallow Sparkle Cookie Tarts</option>
+                            </select>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                            <div>
+                                <label style="font-size: 0.6rem; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">Day:</label>
+                                <select id="event-day" class="option-btn" style="width: 100%; font-size: 0.7rem; font-weight: 850;">
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.6rem; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">Party Slices / Portions:</label>
+                                <input type="number" id="event-portions" value="4" min="1" class="option-btn" style="width: 100%; font-size: 0.7rem; font-weight: 850;">
+                            </div>
+                        </div>
+                        <button type="submit" class="option-btn active" style="text-align: center; font-weight: 900; font-size: 0.75rem; border-radius: 12px; margin-top: 0.5rem; text-transform: uppercase;">
+                            ➕ Add To Schedule
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Scheduled activities list container -->
+                <div id="planner-activities-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Auto Grocery Scaler Output Column -->
+            <div class="mockup-canvas-box border-tt shadow-lg" style="min-height: auto;">
+                <span class="sidebar-badge border-tt" style="background-color: var(--col-mint); color: white;">GROCERY CHECKLIST 🛒</span>
+                <p style="font-size: 0.7rem; font-weight: 700; color: #4A5568; margin-bottom: 1rem;">The list auto-compiles and scales wholesale baking ingredients perfectly aligned with portions on your party schedule.</p>
+                <div class="border-tt shadow-inner-inset" style="background-color: var(--col-cream); padding: 1.25rem; border-radius: 24px; min-height: 200px;">
+                    <ul id="grocery-scaled-list" style="list-style: none; font-size: 0.75rem; font-weight: 800; line-height: 1.7;">
+                        <!-- Filled by JavaScript -->
+                    </ul>
+                </div>
+                <button onclick="window.print()" class="option-btn active" style="text-align: center; font-weight: 950; font-size: 0.75rem; margin-top: 1rem; border-radius: 12px; text-transform: uppercase; background-color: var(--col-teal); color: white;">
+                    🖨️ Print Grocery List
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SECTION 4: DECOR LAB Q&A AND TIPS -->
+    <div id="section-decor" class="view-section fade-in" style="display: none;">
+        <div class="designer-workbench">
+            <div class="controls-card-panel border-tt shadow-md">
+                <h3 style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 4px solid var(--col-teal); padding-bottom: 0.5rem;">Decorating Lab Techniques</h3>
+                <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                    <div class="border-tt" style="padding: 1.25rem; border-radius: 24px; background-color: var(--col-cream);">
+                        <h4 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--col-coral);">🎨 Buttercream Color Science</h4>
+                        <p style="font-size: 0.75rem; font-weight: 700; line-height: 1.5;">Whipped sweet buttercream gains its structure by aerating butter before adding fine powder icing sugar. Always use gel food coloring instead of aqueous liquid versions to preserve thick, pipeable, peak forming dimensions.</p>
+                    </div>
+                    <div class="border-tt" style="padding: 1.25rem; border-radius: 24px; background-color: var(--col-cream);">
+                        <h4 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--col-mint);">🧁 Piping Star Mastery</h4>
+                        <p style="font-size: 0.75rem; font-weight: 700; line-height: 1.5;">Tiny cakes require small details. Grab a size star nozzle tip to pipe elegant border outlines around bento boxes. Release squeezing pressure nicely before pulling back to avoid saggy border curls.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mockup-canvas-box border-tt shadow-lg" style="min-height: auto;">
+                <span class="sidebar-badge border-tt" style="background-color: var(--col-purple); color: white;">MELTED ICING TRAP ⚡</span>
+                <p style="font-size: 0.75rem; font-weight: 700; line-height: 1.6; color: var(--col-teal);">Always bake your small kids cupcakes or bento bases and let them rest on wire rods for at least 1 hour.</p>
+                <p style="font-size: 0.75rem; font-weight: 700; line-height: 1.6; color: var(--col-teal); margin-top: 0.5rem;">Decorating a slightly warm sponge cake acts as an instant heater, transferring energy that melts fats and sugars inside your cute buttercream icing and turns your lovely smiley piping faces into soup!</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- UI Footer credits block -->
+    <footer class="footer-notes">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span>❤️</span>
+            <span>Delicious single-serving kids bento cakes and birthday cupcakes for joyful memories.</span>
+        </div>
+        <div>
+            <span>© TinyTreats • Bite-Sized Celebration Bakes</span>
+        </div>
+    </footer>
+
+    <!-- JavaScript Handling Code Switcher and State Persistence fallback -->
+    <script>
+        // Set to true to retrieve and store variables via api.php endpoint rather than Client LocalStorage standard fallback!
+        const USE_REMOTE_MYSQL_API = false; 
+        const API_URL = "api.php";
+
+        // Native client memory mock storage
+        let sampleRecipes = [
+            {
+                id: "rainbow-bento",
+                name: "Sweet Rainbow Bento Cake",
+                tagline: "4-inch mini sweet bento birthday cake with pink buttercream",
+                description: "The ultimate sweet 'smoll' bento cake with rich pink buttercream icing and a generous crown of rainbow candy star sprinkles.",
+                category: "Bento Cakes",
+                sweetness_rating: "Sugary Dream!",
+                prep_time: 20,
+                cook_time: 25,
+                servings: 4,
+                suitable_age: "Kids 3y+",
+                difficulty: "Friendly Baker",
+                ingredients: [
+                    { name: "All-Purpose Cake Flour", amount: 120, unit: "g" },
+                    { name: "Caster Sugar", amount: 100, unit: "g" },
+                    { name: "Unsalted Butter", amount: 80, unit: "g" },
+                    { name: "Rainbow Star Sprinkles", amount: 30, unit: "g" }
+                ]
+            },
+            {
+                id: "dino-cupcakes",
+                name: "Dino Candy Choco-Cupcakes",
+                tagline: "Fluffy chocolate cupcakes with rich cocoa fudge swirl and dinosaurs",
+                description: "Cute, bouncy mini chocolate cupcakes topped with creamy fudge swirl and crunchy mini-dinosaur candies.",
+                category: "Cupcakes",
+                sweetness_rating: "Double Choco Rush!",
+                prep_time: 15,
+                cook_time: 18,
+                servings: 12,
+                suitable_age: "Kids 2y+",
+                difficulty: "Easy Peasy",
+                ingredients: [
+                    { name: "Plain Cake Flour", amount: 150, unit: "g" },
+                    { name: "Granulated Sugar", amount: 120, unit: "g" },
+                    { name: "Cocoa Powder", amount: 30, unit: "g" },
+                    { name: "Candy Dinosaur Toppers", amount: 12, unit: "pcs" }
+                ]
+            }
+        ];
+
+        let plannedEvents = [
+            { id: 1, day: "Saturday", recipe_id: "rainbow-bento", recipe_name: "Rainbow Bento Cake", meal_type: "Afternoon Birthday", kids_count: 4 }
+        ];
+
+        // 1. Tab Switcing Mechanism
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.style.display = 'none');
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('section-' + tabId).style.display = 'block';
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // 2. Interactive Designing Formula State Variables
+        let currentShape = "bento";
+        let currentShapeName = "Bento Cake";
+        let currentBase = "vanilla";
+        let currentBaseName = "Milky Vanilla";
+        let currentBaseColor = "#FFFDF0";
+        let currentFrostName = "Bubblegum Pink";
+        let currentFrostColor = "#FF6B6B";
+        let currentTopperVal = "🧸";
+
+        function setShapeStyle(id, name) {
+            currentShape = id;
+            currentShapeName = name;
+            document.querySelectorAll('[id^="btn-shape-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-shape-' + id).classList.add('active');
+            
+            // Adjust visual rendering heights
+            const renderSponge = document.getElementById('render-sponge');
+            if (id === 'cupcake') {
+                renderSponge.style.width = "6rem";
+                renderSponge.style.height = "4rem";
+                renderSponge.style.borderRadius = "0px 0px 16px 16px";
+            } else if (id === 'cakepop') {
+                renderSponge.style.width = "4rem";
+                renderSponge.style.height = "4rem";
+                renderSponge.style.borderRadius = "50%";
+            } else {
+                renderSponge.style.width = "11rem";
+                renderSponge.style.height = "2.75rem";
+                renderSponge.style.borderRadius = "0px 0px 20px 20px";
+            }
+            updateDesignerOutputs();
+        }
+
+        function setBaseFlavor(id, name, color) {
+            currentBase = id;
+            currentBaseName = name;
+            currentBaseColor = color;
+            document.querySelectorAll('[id^="btn-base-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-base-' + id).classList.add('active');
+            
+            document.getElementById('render-sponge').style.backgroundColor = color;
+            updateDesignerOutputs();
+        }
+
+        function setFrostingColor(id, name, color) {
+            currentFrostName = name;
+            currentFrostColor = color;
+            document.querySelectorAll('[id^="btn-frost-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-frost-' + id).classList.add('active');
+            
+            document.getElementById('render-frosting').style.backgroundColor = color;
+            updateDesignerOutputs();
+        }
+
+        function updateTopper() {
+            currentTopperVal = document.getElementById('topper-selector').value;
+            document.getElementById('render-topper').innerText = currentTopperVal;
+            updateDesignerOutputs();
+        }
+
+        function updateDesignerOutputs() {
+            document.getElementById('designed-formula-title').innerText = `THE ${currentBaseName} ${currentShapeName}`;
+            document.getElementById('designed-formula-meta').innerText = `★ ${currentFrostName} frosting topped with ${currentTopperVal || 'no crown'}`;
+
+            // Scale DIY recipe ingredient list automatically
+            const list = document.getElementById('diy-ingredients-formula-list');
+            list.innerHTML = `
+                <li>🍰 Icing Sugar: 120g</li>
+                <li>🥛 Butter Slices: 80g</li>
+                <li>🌾 Cake Flour: 150g</li>
+                <li>🥚 Chicken Egg: 1 qty</li>
+                <li>🍭 ${currentFrostName} Gel: 2 drops</li>
+                <li>🍫 ${currentBaseName} crumbs: 50g</li>
+            `;
+        }
+
+        function resetDesigner() {
+            setShapeStyle('bento', 'Bento Cake');
+            setBaseFlavor('vanilla', 'Milky Vanilla', '#FFFDF0');
+            setFrostingColor('pink', 'Bubblegum Pink', '#FF6B6B');
+            document.getElementById('topper-selector').value = "🧸";
+            updateTopper();
+        }
+
+        // 3. Render recipes into the Gallery deck
+        function renderRecipesDeck() {
+            const container = document.getElementById('recipes-gallery');
+            container.innerHTML = "";
+            sampleRecipes.forEach(rec => {
+                container.innerHTML += `
+                    <div class="recipe-card border-tt shadow-md">
+                        <div class="card-img-wrapper">
+                            <div style="background-color: var(--col-yellow); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">🍰</div>
+                            <span class="sweetness-badge border-tt shadow-sm">🍬 ${rec.sweetness_rating}</span>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="recipe-title">${rec.name}</h3>
+                            <p style="font-size: 0.65rem; color: var(--col-coral); font-weight: 800; text-transform: uppercase;">Category: ${rec.category}</p>
+                            <p class="recipe-desc">${rec.description}</p>
+                            <div class="recipe-meta-row">
+                                <span>⏱️ Cooks: ${rec.cook_time} mins</span>
+                                <span>🎈 Suitable: ${rec.suitable_age}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 4. Celebration Planner Add/Delete methods
+        function renderPlannerList() {
+            const listContainer = document.getElementById('planner-activities-list');
+            const groceryContainer = document.getElementById('grocery-scaled-list');
+            
+            listContainer.innerHTML = "";
+            groceryContainer.innerHTML = "";
+            
+            document.getElementById('checklist-title').innerText = `${plannedEvents.length} Scheduled`;
+
+            if (plannedEvents.length === 0) {
+                listContainer.innerHTML = `<p style="font-size: 0.75rem; font-style: italic; font-weight: 700; color: #718096;">No events scheduled yet. Add yours above!</p>`;
+                groceryContainer.innerHTML = `<li>Select custom bento cakes or cups on the left to tally ingredients here.</li>`;
+                return;
+            }
+
+            // Tally grocery quantities
+            let totalFlour = 0;
+            let totalSugar = 0;
+            let totalButter = 0;
+
+            plannedEvents.forEach(evt => {
+                listContainer.innerHTML += `
+                    <div class="border-tt shadow-sm" style="background-color: white; padding: 1rem; border-radius: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span class="sidebar-badge" style="background-color: var(--col-yellow); color: var(--col-teal); font-size: 0.6rem; margin-bottom: 0.25rem; display: inline-block;">${evt.day} Party</span>
+                            <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; color: var(--col-teal);">${evt.recipe_name}</h4>
+                            <p style="font-size: 0.65rem; font-weight: 700; color: #718096;">Leo Portions: ${evt.kids_count} children bakes</p>
+                        </div>
+                        <button onclick="deleteEvent(${evt.id})" class="option-btn" style="background-color: var(--col-coral); color: white; border-color: var(--col-teal); font-size: 0.7rem; font-weight: 900; padding: 0.3rem 0.6rem; border-radius: 8px;">Delete</button>
+                    </div>
+                `;
+
+                // Sum up baking grocery units proportional to the number of slices
+                totalFlour += 30 * evt.kids_count;
+                totalSugar += 25 * evt.kids_count;
+                totalButter += 20 * evt.kids_count;
+            });
+
+            // Write to Grocery checklist
+            groceryContainer.innerHTML = `
+                <li>📦 Fine Bakers Sponge Flour: <span style="color: var(--col-coral); font-family: var(--font-mono);">${totalFlour}g</span></li>
+                <li>🍬 Refined Caster Sweet Sugar: <span style="color: var(--col-coral); font-family: var(--font-mono);">${totalSugar}g</span></li>
+                <li>🥛 Butter Cooking Margarine: <span style="color: var(--col-coral); font-family: var(--font-mono);">${totalButter}g</span></li>
+                <li>🌸 Sprinkles & Rainbow Stars Sparkles: <span style="color: var(--col-coral); font-family: var(--font-mono);">30g</span></li>
+            `;
+        }
+
+        function addPlannerEvent() {
+            const recipeId = document.getElementById('event-recipe-id').value;
+            const recipeSel = document.querySelector(`#event-recipe-id option[value="${recipeId}"]`);
+            const day = document.getElementById('event-day').value;
+            const portions = parseInt(document.getElementById('event-portions').value) || 1;
+
+            const newEvent = {
+                id: Date.now(),
+                day: day,
+                recipe_id: recipeId,
+                recipe_name: recipeSel.text,
+                kids_count: portions
+            };
+
+            plannedEvents.push(newEvent);
+            renderPlannerList();
+        }
+
+        function deleteEvent(id) {
+            plannedEvents = plannedEvents.filter(evt => evt.id !== id);
+            renderPlannerList();
+        }
+
+        // Bootstrap on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderRecipesDeck();
+            updateDesignerOutputs();
+            renderPlannerList();
+        });
+    </script>
+</body>
+</html>
