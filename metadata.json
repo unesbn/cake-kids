@@ -1,0 +1,8 @@
+{
+  "name": "TinyTreats: Mini Kids' Cake Decorator & Planner",
+  "description": "An interactive hub for kids bento cakes and mini cupcakes: virtual cake designer, sugary recipes gallery, party portions planning, and buttercream decorating guides.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
